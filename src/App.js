@@ -7,15 +7,24 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.resolve = this.resolve.bind(this)
+    this.resolve = this.resolve.bind(this);
+    this.clear = this.clear.bind(this);
+    this.numbers= ["1","2","3","4","5","6","7","8","9","."];
+      this.operators= ["+","-","*","/"];
     this.state = {
       all: [],
       current:"",
-      numbers: "0123456789.".split(""),
-      operators:["+","-","*","/"]
+      answer:""
     };
   }
 
+clear(){
+  this.setState({
+    all:[],
+    current:"",
+    answer:""
+  })
+}
   resolve(){
     //console.log(eval("1+2*3"))
     if(this.state.current !==""){
@@ -28,8 +37,9 @@ class App extends React.Component {
     }
     else{
       this.setState({
-        current:eval(this.state.all.join("")),
-        all:[]
+        answer:eval(this.state.all.join("")),
+        all:[],
+        current:""
 
       })
 
@@ -89,14 +99,14 @@ if(!isNaN(val)) console.log(val)
 
         Current: {this.state.current} 
         <div>
-          {this.state.operators.map(symbol =>
+          {this.operators.map(symbol =>
             <button key={symbol} onClick={() => this.handleSubmit(symbol)}>
               {symbol}
             </button>
           )}
         </div>
         <div>
-          {this.state.numbers.map(num =>
+          {this.numbers.map(num =>
             <button key={num} onClick={() => this.getNum(num)}>
               {num}
             </button>
@@ -105,6 +115,9 @@ if(!isNaN(val)) console.log(val)
           <div>
             <button key="=" onClick={this.resolve}>
               =
+            </button>
+            <button key="AC" onClick={this.clear}>
+              AC
             </button>
           </div>
       </div>
