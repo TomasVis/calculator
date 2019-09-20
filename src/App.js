@@ -9,8 +9,10 @@ class App extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.resolve = this.resolve.bind(this);
     this.clear = this.clear.bind(this);
-    this.numbers= ["1","2","3","4","5","6","7","8","9","."];
+    this.numbers= ["0","1","2","3","4","5","6","7","8","9","."];
     this.operators= ["+","-","*","/"];
+    this.words =["zero","one","two","three","four","five","six","seven","eight", "nine","decimal"]
+    this.wordsOfOperators = ["add","subtract","multiply","divide"]
     this.state = {
       all: [],
       current:"",
@@ -26,7 +28,7 @@ clear(){
   })
 }
   resolve(){
-    //console.log(eval("1+2*3"))
+    //if there is a number in state.current, push that number
     if(this.state.current !==""){
       this.setState({
 
@@ -35,16 +37,20 @@ clear(){
       },() => this.resolve());   //fancy pantsy callback on setState
       
     }
-    else if(/\/|\*|\+|\-/.test(this.state.all[this.state.all.length-1])){
-      console.log(this.state.all+"          "+ this.state.all[this.state.all.length-1])
+    //if last item in aray is /+-* remove last item and call resolve again
+    else if(/\/|\*|\+|-/.test(this.state.all[this.state.all.length-1])){
+
       let temp =[...this.state.all];
       temp.pop();
-      //temp.push(operation);
+
       this.setState({
         all:[...temp]
       },() => this.resolve()); 
     }
-    else{
+    else if(this.state.answer !== ""){
+        //do nothing 
+    }
+    else {
       this.setState({
         answer:eval(this.state.all.join("")),
         all:[],
@@ -53,19 +59,15 @@ clear(){
       })
 
     }
-  
-  //let b = eval(cur) ; 
-//console.log(eval(cur))
 
-    /*let temp =[...this.state.all].map(val => {
-
-if(!isNaN(val)) console.log(val)
-
-      })
-    console.log("resolve"+temp)*/
   }
   getNum(num) {
-    if(num ==="0"&&this.state.current ==="0"){
+    if(this.state.answer !== ""){
+      this.setState({
+        answer:""
+      },() => this.getNum(num));
+    }
+    else if(num ==="0"&&this.state.current ==="0"){
       this.setState({ current: "0"});
     }
     else if(num !=="0"&& this.state.current ==="0"&&num !=="."){
@@ -81,7 +83,16 @@ if(!isNaN(val)) console.log(val)
     
   }
   handleSubmit(operation) {
-    if(this.state.current !== ""){
+    // if answer exists, push it to array and then push operator
+    if(this.state.answer !==""){
+      this.setState({
+
+        all:[...this.state.all,this.state.answer,operation],
+        answer:""
+      })
+    }
+    // if current number exists, push that number to array and then push operator
+    else if(this.state.current !== ""){
       this.setState({
 
         all:[...this.state.all,this.state.current,operation],
@@ -89,11 +100,11 @@ if(!isNaN(val)) console.log(val)
       })
       
     }
+    //
     else if(this.state.current === ""&& this.state.all.length>0){
-      //console.log(this.state.all.pop())
+
       let temp =[...this.state.all];
       temp.pop();
-      //temp.push(operation);
       this.setState({
         all:[...temp,operation]
       })
@@ -104,28 +115,29 @@ if(!isNaN(val)) console.log(val)
   render() {
     return (
       <div>
-        <div>Display: {this.state.all} </div>
+        <div id="display">Display: {this.state.all} 
 
-        Current: {this.state.current} Answer:{this.state.answer}
+        Entry: {this.state.current} {this.state.answer}
+        </div>
         <div>
-          {this.operators.map(symbol =>
-            <button key={symbol} onClick={() => this.handleSubmit(symbol)}>
+          {this.operators.map((symbol,index) =>
+            <button key={symbol} id={this.wordsOfOperators[index]} onClick={() => this.handleSubmit(symbol)}>
               {symbol}
             </button>
           )}
         </div>
         <div>
-          {this.numbers.map(num =>
-            <button key={num} onClick={() => this.getNum(num)}>
+          {this.numbers.map((num,index) =>
+            <button key={num} id={this.words[index]} onClick={() => this.getNum(num)}>
               {num}
             </button>
           )}
         </div>
           <div>
-            <button key="=" onClick={this.resolve}>
+            <button key="=" id="equals" onClick={this.resolve}>
               =
             </button>
-            <button key="AC" onClick={this.clear}>
+            <button key="AC" id="clear" onClick={this.clear}>
               AC
             </button>
           </div>
