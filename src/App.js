@@ -15,7 +15,7 @@ class App extends React.Component {
     this.wordsOfOperators = ["add","subtract","multiply","divide"]
     this.state = {
       all: [],
-      current:"",
+      current:"0",
       answer:""
     };
   }
@@ -23,13 +23,14 @@ class App extends React.Component {
 clear(){
   this.setState({
     all:[],
-    current:"",
+    current:"0",
     answer:""
   })
 }
   resolve(){
+
     //if there is a number in state.current, push that number
-    if(this.state.current !==""){
+    if(this.state.current !=="0"&&this.state.current !==""){
       this.setState({
 
         all:[...this.state.all,this.state.current],
@@ -73,7 +74,7 @@ clear(){
     else if(num !=="0"&& this.state.current ==="0"&&num !=="."){
       this.setState({ current: num });
     }
-    else if(num==="."&&this.state.current ===""){
+    else if(num==="."&&this.state.current ==="0"){
       this.setState({ current: "0." });
     }
     else if(num==="." && /\./.test(this.state.current)){
@@ -100,14 +101,18 @@ clear(){
       })
       
     }
-    //
+    // there is no number in current but there are in "all",remove last element
+    //from aray and push the most recently entered.
     else if(this.state.current === ""&& this.state.all.length>0){
+      // if most recent is "-"
+      if(false){}
 
-      let temp =[...this.state.all];
+       else{ let temp =[...this.state.all];
       temp.pop();
       this.setState({
         all:[...temp,operation]
       })
+    }
     }
     console.log(this.state.all)
   }
