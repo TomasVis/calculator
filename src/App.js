@@ -10,7 +10,7 @@ class App extends React.Component {
     this.resolve = this.resolve.bind(this);
     this.clear = this.clear.bind(this);
     this.numbers= ["1","2","3","4","5","6","7","8","9","."];
-      this.operators= ["+","-","*","/"];
+    this.operators= ["+","-","*","/"];
     this.state = {
       all: [],
       current:"",
@@ -34,6 +34,15 @@ clear(){
         current:""
       },() => this.resolve());   //fancy pantsy callback on setState
       
+    }
+    else if(/\/|\*|\+|\-/.test(this.state.all[this.state.all.length-1])){
+      console.log(this.state.all+"          "+ this.state.all[this.state.all.length-1])
+      let temp =[...this.state.all];
+      temp.pop();
+      //temp.push(operation);
+      this.setState({
+        all:[...temp]
+      },() => this.resolve()); 
     }
     else{
       this.setState({
@@ -97,7 +106,7 @@ if(!isNaN(val)) console.log(val)
       <div>
         <div>Display: {this.state.all} </div>
 
-        Current: {this.state.current} 
+        Current: {this.state.current} Answer:{this.state.answer}
         <div>
           {this.operators.map(symbol =>
             <button key={symbol} onClick={() => this.handleSubmit(symbol)}>
