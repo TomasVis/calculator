@@ -6,7 +6,7 @@ import './App.css';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.resolve = this.resolve.bind(this)
     this.state = {
       all: [],
@@ -15,8 +15,35 @@ class App extends React.Component {
       operators:["+","-","*","/"]
     };
   }
+
   resolve(){
-    console.log("resolve")
+    //console.log(eval("1+2*3"))
+    if(this.state.current !==""){
+      this.setState({
+
+        all:[...this.state.all,this.state.current],
+        current:""
+      },() => this.resolve());   //fancy pantsy callback on setState
+      
+    }
+    else{
+      this.setState({
+        current:eval(this.state.all.join("")),
+        all:[]
+
+      })
+
+    }
+  
+  //let b = eval(cur) ; 
+//console.log(eval(cur))
+
+    /*let temp =[...this.state.all].map(val => {
+
+if(!isNaN(val)) console.log(val)
+
+      })
+    console.log("resolve"+temp)*/
   }
   getNum(num) {
     if(num ==="0"&&this.state.current ==="0"){
@@ -34,7 +61,7 @@ class App extends React.Component {
     else this.setState({ current: this.state.current+num });
     
   }
-  handleClick(operation) {
+  handleSubmit(operation) {
     if(this.state.current !== ""){
       this.setState({
 
@@ -43,7 +70,7 @@ class App extends React.Component {
       })
       
     }
-    if(this.state.current === ""&& this.state.all.length>0){
+    else if(this.state.current === ""&& this.state.all.length>0){
       //console.log(this.state.all.pop())
       let temp =[...this.state.all];
       temp.pop();
@@ -63,7 +90,7 @@ class App extends React.Component {
         Current: {this.state.current} 
         <div>
           {this.state.operators.map(symbol =>
-            <button key={symbol} onClick={() => this.handleClick(symbol)}>
+            <button key={symbol} onClick={() => this.handleSubmit(symbol)}>
               {symbol}
             </button>
           )}
