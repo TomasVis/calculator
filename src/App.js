@@ -101,11 +101,20 @@ clear(){
       })
       
     }
-    // there is no number in current but there are in "all",remove last element
+        // there is no number in current but there are in "all",remove last element
     //from aray and push the most recently entered.
     else if(this.state.current === ""&& this.state.all.length>0){
-      // if most recent is "-"
-      if(false){}
+      // if most recent operator is "-" than take the the operator from array and concat it
+      // with the "-"
+      if(operation === "-"){
+        let tempOp = this.state.all[this.state.all.length-1]+"-";
+        let temp =[...this.state.all];
+        temp.pop();
+      this.setState({
+        all:[...temp,tempOp]
+      })
+
+      }
 
        else{ let temp =[...this.state.all];
       temp.pop();
@@ -114,7 +123,6 @@ clear(){
       })
     }
     }
-    console.log(this.state.all)
   }
 
   render() {
