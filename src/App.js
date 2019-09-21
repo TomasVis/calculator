@@ -1,7 +1,10 @@
 import React from 'react';
 import './App.css';
 
-
+//ToDo
+//Restrict number lenght, or disable expanding display
+// resolve bug with dissapearing zero after resolving smth
+//add on/off functionality
 
 class App extends React.Component {
   constructor(props) {
