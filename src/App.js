@@ -9,9 +9,9 @@ class App extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.resolve = this.resolve.bind(this);
     this.clear = this.clear.bind(this);
-    this.numbers= ["0","1","2","3","4","5","6","7","8","9","."];
+    this.numbers= ["1","2","3","4","5","6","7","8","9","0","."];
     this.operators= ["+","-","*","/"];
-    this.words =["zero","one","two","three","four","five","six","seven","eight", "nine","decimal"]
+    this.words =["one","two","three","four","five","six","seven","eight", "nine","zero","decimal"]
     this.wordsOfOperators = ["add","subtract","multiply","divide"]
     this.state = {
       all: [],
@@ -74,7 +74,7 @@ clear(){
     else if(num !=="0"&& this.state.current ==="0"&&num !=="."){
       this.setState({ current: num });
     }
-    else if(num==="."&&this.state.current ==="0"){
+    else if(num==="."&&(this.state.current ==="0"||this.state.current ==="")){
       this.setState({ current: "0." });
     }
     else if(num==="." && /\./.test(this.state.current)){
@@ -101,7 +101,7 @@ clear(){
       })
       
     }
-        // there is no number in current but there are in "all",remove last element
+    // there is no number in current but there are in "all",remove last element
     //from aray and push the most recently entered.
     else if(this.state.current === ""&& this.state.all.length>0){
       // if most recent operator is "-" than take the the operator from array and concat it
@@ -123,37 +123,48 @@ clear(){
       })
     }
     }
+    console.log(this.state.all)
   }
 
   render() {
     return (
-      <div>
-        <div id="display">Display: {this.state.all} 
-
-        Entry: {this.state.current} {this.state.answer}
+      <div className="outerContainer">
+      <hr className="line1"/>
+      <hr className="line2"/>
+      <hr className="line3"/>
+      <div className = "container">
+        <div className="display" id="display">{this.state.all}{this.state.current}{this.state.answer}
         </div>
-        <div>
-          {this.operators.map((symbol,index) =>
-            <button key={symbol} id={this.wordsOfOperators[index]} onClick={() => this.handleSubmit(symbol)}>
-              {symbol}
-            </button>
-          )}
-        </div>
-        <div>
-          {this.numbers.map((num,index) =>
-            <button key={num} id={this.words[index]} onClick={() => this.getNum(num)}>
-              {num}
-            </button>
-          )}
-        </div>
-          <div>
-            <button key="=" id="equals" onClick={this.resolve}>
-              =
-            </button>
-            <button key="AC" id="clear" onClick={this.clear}>
-              AC
-            </button>
+        <div className="allButtons">
+       
+          <div className="numButtons">
+            {this.numbers.map((num,index) =>
+              <button className="button" key={num} id={this.words[index]} onClick={() => this.getNum(num)}>
+                {num}
+              </button>
+            )}
           </div>
+          <div className="operatorButtons">
+            {this.operators.map((symbol,index) =>
+              <button className="button" key={symbol} id={this.wordsOfOperators[index]} onClick={() => this.handleSubmit(symbol)}>
+                {symbol}
+              </button>
+            )}
+          </div>
+          <div className="onOffButtons">
+              <button className="button" key="=" id="equals" onClick={this.resolve}>
+                =
+              </button>
+              <button className="button" key="AC" id="clear" onClick={this.clear}>
+                AC
+              </button>
+              <button className="button" key="onOff" id="onOff" >
+                On
+              </button>
+
+          </div>
+      </div>
+      </div>
       </div>
     )
   }
@@ -161,3 +172,6 @@ clear(){
 
 
 export default App;
+
+
+
