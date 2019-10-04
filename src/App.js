@@ -4,6 +4,7 @@ import './App.css';
 //ToDo
 //Restrict number lenght, or disable expanding display
 // resolve bug with dissapearing zero after resolving smth
+//0.1+0.2 =0.300000000
 //add on/off functionality
 
 class App extends React.Component {
