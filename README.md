@@ -4,5 +4,5 @@
 
 
 
-### FreeCodeCamp project forFront End Certicicate
+### FreeCodeCamp project for the Front End Certicicate
 
